@@ -1,6 +1,15 @@
 # Vue3-boilerplate
+Best Vue practises as of 2023
 Vue3, CSR, Atomic Design SFCs, APIhandling, TypeScript
 
+## How is this improving your (dev)life ##
+
+- filesystem that makes sense: i.e. Atomic Design components
+- running start with APIhandler
+- using <script setup> (prevents verbose use of setup(), return all computed values etc.)
+- Pinia instead of Vuex
+- encouragement of using TypeScript
+- 
 
 ## Table of Contents
 
