@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import APIHandler from './utils/APIhandler'
+
+const APIHandlerInstance = new APIHandler({baseURL: "http://example.com", endpoint: "/api", response: ()=>"yomama"});
+const url = APIHandlerInstance.apiURL();
+console.log("url", url);
 </script>
 
 <template>
@@ -14,6 +19,9 @@ import HelloWorld from './components/HelloWorld.vue'
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
+
+
+
     </div>
   </header>
 

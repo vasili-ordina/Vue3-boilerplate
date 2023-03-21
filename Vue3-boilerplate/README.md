@@ -2,6 +2,37 @@
 
 This template should help get you started developing with Vue 3 in Vite.
 
+## How is this improving your (dev)life ##
+
+### in general: ###
+- filesystem that makes sense: i.e. Atomic Design components
+- elements encourage HTML5, ARIA and Microdata (schema.org)
+- running start with APIhandler
+- using ```<script setup>``` (prevents verbose use of setup(), return all computed values etc.)
+- Pinia instead of Vuex
+- encouragement of using TypeScript
+- no implicit imports, no BEM SCSS . both make reference searching hard to search and understand.
+- policies? (is client allowed to store data? privacy etc)
+- prettyfied but no linting
+
+### API handling ###
+- no Axios, but native "Fetch".
+- checking internet connection and bandwidth
+- versioning. caching must be refreshed when the api handler detects a new version of de client.
+- secure
+- fast
+- caching requests in case there is temporarily broken internet connection due to (tunnel)interference, area with no service, data use cap. These are especially the case in mobile solutions
+- caching / storing data in local store if dealt with masterdata. options are explored and possibly there are 3 types of dataretention: dynamic, static and session.
+    - dynamic: fresh data with every request.
+    - static data: almost never changes (translation tables etc). (stored indefinetly on local machine, only updates when version of website changes. cache is being flushed)
+    - session data: semi persistant data. Assumption can be made that data won't change over the course of one usersession.
+- error handling
+
+### Asset management ###
+- using image optimalisation based on device and resolution. (and bandwidth)
+
+
+
 ## Recommended IDE Setup
 
 [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
