@@ -9,13 +9,14 @@ type ValidUrlCharNoSlash = `${
 type Callback = () => void
 
 interface ConfigRequired {
-  baseURL: `${string}${ValidUrlCharNoSlash}`       // base url of API. No trailing "/"" allowed! i.e. "localhost:3000/api"
+  baseURL: `${string}${ValidUrlCharNoSlash}`                // base url of API: scheme + host + baseBath. No trailing "/"" allowed! i.e. "http://localhost:3000/api"
   response: Callback
 }
 interface ConfigOptional {
-  endpoint?: `/${string}` | ''                     // endpoint of API. Must start with "/". i.e. "/users"
-  method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
+  endpoint?: `/${string}` | ''                              // endpoint of API. Must start with "/". i.e. "/users"
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'      // method of request. i.e. GET
   payload?: string
+  headers?: string[]
 }
 interface Config extends ConfigOptional, ConfigRequired {}
 
@@ -25,13 +26,29 @@ export default class APIHandler {
     endpoint: ''
     , method: 'GET'
     , payload: ''
+    , headers: [
+        'Accept-Charset: UTF-8'
+      , 'Content-Type: text/JSON'
+      , 'Accept: application/json'
+    ]
   }  
   public config: Config;
-
   constructor(config:Config)  {
     this.config = {...this.defaultConfig, ...config};
   }
+
   public apiURL = (URL?:string) => {
     return URL || (this.config.baseURL + this.config.endpoint) as string;
+  }
+  public check = ():boolean => {
+    return false
+  }
+  public request = async ():Promise<Response> => {
+    const options = {
+        method: this.config.method,
+       // body: this.config.payload
+    }
+    let r = await fetch(this.apiURL(), options);
+    return r;
   }
 }

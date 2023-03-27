@@ -3,8 +3,12 @@ import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 import APIHandler from './utils/APIhandler'
 
-const APIHandlerInstance = new APIHandler({baseURL: "http://example.com", endpoint: "/api", response: ()=>"yomama"});
-const url = APIHandlerInstance.apiURL();
+const APIHandlerInstance = new APIHandler({
+  baseURL: "http://localhost:5173/api", 
+  endpoint: "", 
+  response: ()=>"yomama"
+});
+const url = APIHandlerInstance.request();
 console.log("url", url);
 </script>
 
