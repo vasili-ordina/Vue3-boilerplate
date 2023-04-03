@@ -1,7 +1,10 @@
 <script setup lang="ts">
-defineProps<{
-  msg: string
+import type { APIHandlerInterface } from '@/utils/APIhandler';
+
+const props = defineProps<{
+  msg: String,
 }>()
+
 </script>
 
 <template>

@@ -1,15 +1,30 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
-import APIHandler from './utils/APIhandler'
+import APIHandler, { type Config } from './utils/APIhandler'
 
-const APIHandlerInstance = new APIHandler({
-  baseURL: "http://localhost:5173/api", 
-  endpoint: "", 
-  response: ()=>"yomama"
-});
-const url = APIHandlerInstance.request();
-console.log("url", url);
+let loadAPI = ref('');
+
+const APIHandlerconfig = {
+  baseURL: window.location.origin + "/api",
+  endpoint: "/"
+} as Config
+
+onMounted(async ()=>{
+  const APIHandlerInstance = new APIHandler(APIHandlerconfig);
+  await APIHandlerInstance.check();
+  APIHandlerInstance.requestJSON('/ingredientgroups')
+  .then((status)=>{
+    loadAPI.value="done!";
+  })
+  .catch((err)=>{
+    loadAPI.value = "error: " + err;
+  })
+})
+
+loadAPI.value += 'loading...';
+
 </script>
 
 <template>
@@ -28,8 +43,10 @@ console.log("url", url);
 
     </div>
   </header>
-
-  <RouterView />
+  <div class="loadingCard">
+    {{ loadAPI }}
+  </div>
+  <RouterView :API="APIHandlerInstance"/>
 </template>
 
 <style scoped>
