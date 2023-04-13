@@ -7,20 +7,27 @@ import APIHandler, { type Config } from './utils/APIhandler'
 let loadAPI = ref('');
 
 const APIHandlerconfig = {
-  baseURL: window.location.origin + "/api",
-  endpoint: "/"
+  baseURL: window.location.origin + "/api"
 } as Config
 
 onMounted(async ()=>{
-  const APIHandlerInstance = new APIHandler(APIHandlerconfig);
+  const APIHandlerInstance = new APIHandler(APIHandlerconfig)
   await APIHandlerInstance.check();
   APIHandlerInstance.requestJSON('/ingredientgroups')
-  .then((status)=>{
+  .then((response)=>{
+    console.log("response", response);
     loadAPI.value="done!";
   })
   .catch((err)=>{
     loadAPI.value = "error: " + err;
   })
+
+  APIHandlerInstance.multiRequestJSON(['/DRI_energy', '/DRI_prot', '/DRI_water'])
+  // APIHandlerInstance.multiRequestJSON([{endpoint: '/DRI_energy'}, {endpoint: '/DRI_prot'}, {endpoint: '/DRI_water'}])
+  .then((responses)=>{
+    console.log("multi", responses);
+  })  
+
 })
 
 loadAPI.value += 'loading...';
@@ -46,7 +53,7 @@ loadAPI.value += 'loading...';
   <div class="loadingCard">
     {{ loadAPI }}
   </div>
-  <RouterView :API="APIHandlerInstance"/>
+  <RouterView :API="loadAPI"/>
 </template>
 
 <style scoped>
