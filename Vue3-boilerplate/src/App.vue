@@ -2,18 +2,24 @@
 import { ref, onMounted } from 'vue';
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
-import APIHandler, { type Config } from './utils/APIhandler'
+import APIHandler from './utils/APIhandlerPlus/'
 
 let loadAPI = ref('');
 
-const APIHandlerconfig = {
-  baseURL: window.location.origin + "/api"
-} as Config
 
 onMounted(async ()=>{
-  const APIHandlerInstance = new APIHandler(APIHandlerconfig)
-  await APIHandlerInstance.check();
-  APIHandlerInstance.requestJSON('/ingredientgroups')
+  const APIHandlerInstance = new APIHandler(
+    { 
+      // baseURL: "https://api.github.com",
+      baseURL: "http://some-bad-url.xyz/noapi",
+      successCallback: (status, response)=>console.log("yo: ", response)
+    });
+  // APIHandlerInstance.authToken = "abc123def456ghi789jkl000";
+
+  const overview = await APIHandlerInstance.check();
+  console.log("overview GitHub API", overview);
+
+  APIHandlerInstance.requestJSON('/repos/vasili-ordina/Vue3-boilerplate')
   .then((response)=>{
     console.log("response", response);
     loadAPI.value="done!";
@@ -22,7 +28,7 @@ onMounted(async ()=>{
     loadAPI.value = "error: " + err;
   })
 
-  APIHandlerInstance.multiRequestJSON(['/DRI_energy', '/DRI_prot', '/DRI_water'])
+  // APIHandlerInstance.multiRequestJSON(['/DRI_energy', '/DRI_prot', '/DRI_water'])
   // APIHandlerInstance.multiRequestJSON([{endpoint: '/DRI_energy'}, {endpoint: '/DRI_prot'}, {endpoint: '/DRI_water'}])
   .then((responses)=>{
     console.log("multi", responses);
